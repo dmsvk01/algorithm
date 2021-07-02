@@ -37,16 +37,8 @@ int main()
     int sum=0, result=0, min=2000000000;
     for(int i=0; i<m; i++){
         cin >> x >> y;
-        bool find=true;
-        for(int i=0; i<a[x].size(); i++){
-            if(a[x][i] == y){
-                find = false;
-            }
-        }
-        if(find){
-            a[x].push_back(y);
-            a[y].push_back(x);
-        }
+        a[x].push_back(y);
+        a[y].push_back(x);
     }
     
     for(int i=1; i<=n; i++){
@@ -55,22 +47,14 @@ int main()
         }
     }
     
-    for(int i=1; i<=n; i++){
-        //printf("\n\n---------%d----------\n",i);
+    for(int i=1; i<=n; i++)
         bfs(i);
-    }
-    for(int i=1; i<=n; i++){
-        for(int j=1; j<=n; j++){
-            //printf("(%d, %d) : %d\n",i,j,rs[i][j]);
-        }
-        //cout << endl;
-    }
+        
     for(int i=1; i<=n; i++){
         sum=0;
         for(int j=1; j<=n; j++){
             sum+=rs[i][j];
         }
-        //printf("%d : %d\n", i, sum);
         if(min > sum){ 
             min = sum;
             result = i;
