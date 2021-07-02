@@ -71,7 +71,7 @@ int main()
             sum+=rs[i][j];
         }
         //printf("%d : %d\n", i, sum);
-        if(min > sum){
+        if(min > sum){ 
             min = sum;
             result = i;
         }
