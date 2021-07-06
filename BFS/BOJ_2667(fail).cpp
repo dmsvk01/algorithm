@@ -2,6 +2,7 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
@@ -14,27 +15,33 @@ int n;
 int bfs(int a, int b){
   int c=0;
   q.push(make_pair(a,b));
+  v[a][b]=1;
+  input[a][b]=1;
   while(!q.empty()){
     c++;
     int x = q.front().first;
     int y = q.front().second;
-    printf("%d, %d\n", x,y);
+    //printf("%d, %d\n", x,y);
     q.pop();
      // 방문을 안했고 집이있다면(input==1이라면)
-    if(v[x-1][y]==0 && input[x-1][y] && x!=n-1){ // 아래
+    if(v[x-1][y]==0 && input[x-1][y]==1 && x!=0){ // 위
       v[x-1][y]=1;
+      input[x-1][y]=1;
       q.push(make_pair(x-1,y));
     }
-    if(v[x+1][y]==0 && input[x+1][y] && x!=0){ // 위
+    if(v[x+1][y]==0 && input[x+1][y]==1 && x!=n-1){ // 아래
       v[x+1][y]=1;
+      input[x+1][y]=1;
       q.push(make_pair(x+1,y));
     }
-    if(v[x][y-1]==0 && input[x][y-1]  && y!=0){ // 왼쪽
+    if(v[x][y-1]==0 && input[x][y-1]==1 && y!=0){ // 왼쪽
       v[x][y-1]=1;
+      input[x][y-1]=1;
       q.push(make_pair(x,y-1));
     }
-    if(v[x][y+1]==0 && input[x][y+1]  && y!=n-1){ // 오른쪽
+    if(v[x][y+1]==0 && input[x][y+1]==1 && y!=n-1){ // 오른쪽
       v[x][y+1]=1;
+      input[x][y+1]=1;
       q.push(make_pair(x,y+1));
     }
   }
@@ -43,25 +50,36 @@ int bfs(int a, int b){
 
 int main(){
   int count=0;
+  string str;
   cin >> n;
   for(int i=0; i<n; i++){
+      cin >> str;
     for(int j=0; j<n; j++){
-      cin >> input[i][j];
+      input[i][j] = str[j]-48;
     }
   }
   for(int i=0; i<n; i++){
     for(int j=0; j<n; j++){
-      if(input[i][j]==1){
+      if(input[i][j]==1 && v[i][j]==0){
+        //printf("%d, %d\n", i,j);
         int x = bfs(i,j);
         result.push_back(x);
         count++;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+               // printf("%d ", v[i][j]);
+            }
+            //printf("\n");
+        }
       }
     }
   }
-  sort(result.begin(), result.end(), greater<int>());
+  sort(result.begin(), result.end());
   
   printf("%d\n", count);
   
+  int k = result.size();
+  //printf("result size : %d\n", k);
   for(int i=0; i<result.size(); i++)
     printf("%d\n", result[i]);
 }
@@ -75,7 +93,6 @@ int main(){
 -> 1을 찾는다. 그리고 찾은 1인덱스를 중심으로 bfs를 돌린다.
 탐색이 1차례 완료되면 result에 단지수를 입력한다.
 1이 없을때 까지 찾고 종료하낟.
-
 7
 0110100
 0110101
@@ -84,10 +101,8 @@ int main(){
 0100000
 0111110
 0111000
-
 3
 7
 8
 9
-
 */
