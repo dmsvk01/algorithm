@@ -17,6 +17,9 @@ int bfs(pair<int, int> input[], int n){
     int a = q.front().first;
     int b = q.front().second;
     // 말이동 가능 한 자리면 이동
+    // 1.  경로에 대해 모두 고려하는 if문 8개 만들기 or for문으로 구조화 시키기 고민해보자
+    // 2. 고려하면서 dp에 저장하기
+    // 3. 현재위치가 도착위치면 count 를 리턴한다.
     for(int i=0; i>2; i++){
       for(int j=0; j<2; j++){
         for(int k=0; k<2; k++){
