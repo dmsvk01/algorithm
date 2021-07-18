@@ -18,16 +18,16 @@ void dijkstras(int start, int n){
   // 그냥 push(start)만 하면 되는거 아닌가? -> NO! 굳이 거리인 0을 추가하는 이유는 우선순위큐의 성질을 활용해서 연결된 노드중 최단path를 갖는 index를 찾기 위해서 이다. 
   dist[start]=0;
   while(!pq.empty()){
-    int wx = -pq.top().first;
-    int x = pq.top().second;
+    int wx = -pq.top().first; // 최단거리 경로의 가중치를 꺼냄
+    int x = pq.top().second; // 최단거리 경로의 인덱스를 꺼냄
     v[x] = 1;
     pq.pop();
-    for(int i=0; i<a[x].size(); i++){
+    for(int i=0; i<a[x].size(); i++){ // 최단거리 인덱스와 인접한 노드들을 확인하면서 최소값으로 업데이트한다.
       int y = a[x][i].first;
       int wy = a[x][i].second;
       if(v[y]==1) continue;
       if(dist[y] > wx + wy){
-        dist[y] = dist[x] + wy; //여기서 wx와 dist[x]는 같다?
+        dist[y] = dist[x] + wy; //여기서 wx와 dist[x]는 같다? -> 그렇다
         pq.push({-dist[y], y});
       }
     }
