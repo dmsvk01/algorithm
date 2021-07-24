@@ -24,11 +24,9 @@ void floyd_warshall(){
   for(int i=1; i<=n; i++){ // i 를 거쳐서 가는
     for(int j=1; j<=n; j++){ // j 와
       for(int k=1; k<=n; k++){ // k 사이의 dist
-        if (dist[j][i] != INF && dist[i][k] != INF){
           if(dist[j][k] > dist[j][i] + dist[i][k]){
             dist[j][k] = dist[j][i] + dist[i][k];
           }
-        }
       }
     }
   }
