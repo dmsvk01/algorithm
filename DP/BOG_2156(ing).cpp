@@ -1,39 +1,25 @@
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
-int input[10001];
-int mem[10001][3];
-int n;
-
-void dp(int pos, int c, int value){
-  if(pos==n) return ;
-
-  if(c==2){
-    mem[pos][c] = mem[pos-1][c-1];
-    dp(pos+1, 0, value); // 안먹어야 하고 안먹으니까 value 값 그대로 간다.
-  }
-  else{
-    mem[pos][c+1] = value + input[pos];
-    dp(pos+1, c+1, mem[pos][c+1]); // 먹음
-
-    mem[pos][c] = value;
-    dp(pos+1, 0, value); // 안먹음
-  }
-  return ;
-}
-
 int main(){
-  cin >> n;
-  for(int i=0; i<n; i++) cin >> input[i];
-  dp(0,0,0);
-
-  for(int i=0; i<3; i++){
-    for(int j=0; j<n; j++){
-      printf("%d ", mem[j][i]);
+    int n; cin >> n;
+    int a[10001]={0};
+    int dp[10001]={0};
+    for(int i=1; i<=n; i++) scanf("%d", &a[i]);
+    dp[0] = 0;
+    dp[1] = a[1];
+    dp[2] = a[1] + a[2];
+    for(int i=3; i<=n; i++){
+        dp[i] = max({dp[i-3]+a[i-1]+a[i], dp[i-2]+a[i], dp[i-1]});
     }
-    printf("\n");
-  }
+    printf("%d\n", dp[n]);
 }
 
-//첫째 줄에 포도주 잔의 개수 n이 주어진다. (1≤n≤10,000)
+/*
+dp의 위력을 깨달았다.
+항상 재귀로 가지치기하는 식으로 dp문제를 해결했었는데
+점화식을 찾고 O(n)만에 답을 구할 수 있다는 것에 놀랐다.
+더 dp 공부를 해야 겠다.
+*/
