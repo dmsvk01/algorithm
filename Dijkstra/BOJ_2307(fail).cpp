@@ -1,4 +1,4 @@
- #include <iostream>
+#include <iostream>
 #include <vector>
 #include <queue>
 #define VMAX 1001
@@ -7,7 +7,7 @@
 using namespace std;
 
 vector<pair<int,int>> v[VMAX];
-vector<pair<pair<int,int>,int>> allv;
+vector<pair<int,int>> opt;
 int dist[VMAX];
 int n;
 
@@ -20,6 +20,7 @@ void dijkstras1(int start){
     int x = pq.top().second;
     int wx = -pq.top().first;
     pq.pop();
+    if(x==n) return ;
     for(int i=0; i<v[x].size(); i++){
       int y = v[x][i].first;
       int wy = v[x][i].second;
@@ -27,15 +28,16 @@ void dijkstras1(int start){
       if(dist[y] > dist[x] + wy){
         dist[y] = dist[x] + wy;
         pq.push({-dist[y], y});
+        opt.push_back({x,y});
         //printf("%d %d발견 초기화 : dist[%d]:%d\n", x,y,y,dist[y]);
       }
     }
   }
 }
 
-void dijkstras2(int start, pair<pair<int,int>,int> a){
-  int tx = a.first.first;
-  int ty = a.first.second;
+void dijkstras2(int start, pair<int,int> a){
+  int tx = a.first;
+  int ty = a.second;
   priority_queue<pair<int,int>> pq;
   for(int i=0; i<=n; i++) dist[i] = INF;
   dist[1]=0;
@@ -44,6 +46,7 @@ void dijkstras2(int start, pair<pair<int,int>,int> a){
     int x = pq.top().second;
     int wx = -pq.top().first;
     pq.pop();
+    if(x==n) return ;
     for(int i=0; i<v[x].size(); i++){
       int y = v[x][i].first;
       int wy = v[x][i].second;
@@ -62,7 +65,6 @@ int main(){
     scanf("%d %d %d", &x, &y, &w);
     v[x].push_back({y,w});
     v[y].push_back({x,w});
-    allv.push_back({{x,y},w});
   }
   dijkstras1(1); // st에 담기
   //printf("init value : %d\n", dist[n]);
@@ -75,8 +77,8 @@ int main(){
   }
   int minv = dist[n];
 
-  for(int i=0; i<allv.size(); i++){
-    dijkstras2(1, allv[i]);
+  for(int i=0; i<opt.size(); i++){
+    dijkstras2(1, opt[i]);
     //printf("----%d----\n", i+1);
     //printf("%d : %d\n", i,dist[n]);
 
@@ -125,9 +127,8 @@ int main(){
 지연효과가 없으면 0 -> 무슨경우지? 아예 탈출 불가능한 경우?
 
 1. 1부터n으로의 dijkstras 진행 -> 만약 탈출불가능 한 경우 0 출력
-2. 진행하면서 st에 다가 거치는 도로들을 담는다. -> 불가능할듯
-st를 따로 설정하는 게 아니라 모든 도로에 대해 진행해야 할듯
-3. st에 있는 도로 개수만큼 for문 진행하면서 각 도로를 막는 경우에 대해 
+2. 1을 진행하면서 opt에 다가 거치는 도로들을 담는다.
+3. opt에 있는 도로 개수만큼 for문 진행하면서 각 도로를 막는 경우에 대해 
 dijkstras를 진행하면서 기존 최소값보다 얼마나 큰지를 계산한다.
 -> 만약 탈출불가능 (INF)이면 -1
 -> INF 아니면 기존 최소값과 차이를 구해서 max와 비교 후 갱신
